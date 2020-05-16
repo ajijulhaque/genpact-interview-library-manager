@@ -1,49 +1,29 @@
-package com.genpact.interview.librarymanager.entities;
+package com.genpact.interview.librarymanager.models;
 
 import java.util.Date;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-
-import com.genpact.interview.librarymanager.enums.BOOK_TYPE;
+import com.genpact.interview.librarymanager.entities.Library;
 import com.genpact.interview.librarymanager.enums.GENRE;
 
-@Entity
-public class Book {
-	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE)
-	private long bookId;
+public class ItemResponse {
+	private long id;
 	private String name;
 	private String description;
 	private String author;
 	private String publishers;
-	private String isbnNo;
 	private GENRE genre;
 	private String code;
-	private BOOK_TYPE type;
 	private String createdBy;
 	private Date createdOn;
 	private String lastUpdatedBy;
 	private Date lastUpdatedOn;
-	@ManyToOne
-	@JoinColumn(name="libraryId", nullable = false)
-	private Library library;
-	
-	public long getBookId() {
-		return bookId;
+	private LibraryModel library;
+	private BookModel book;
+	public long getId() {
+		return id;
 	}
-	public void setBookId(long bookId) {
-		this.bookId = bookId;
-	}
-	public Library getLibrary() {
-		return library;
-	}
-	public void setLibrary(Library library) {
-		this.library = library;
+	public void setId(long id) {
+		this.id = id;
 	}
 	public String getName() {
 		return name;
@@ -63,35 +43,23 @@ public class Book {
 	public void setAuthor(String author) {
 		this.author = author;
 	}
-	public String getCode() {
-		return code;
-	}
-	public void setCode(String code) {
-		this.code = code;
-	}
-	public BOOK_TYPE getType() {
-		return type;
-	}
-	public void setType(BOOK_TYPE type) {
-		this.type = type;
-	}
 	public String getPublishers() {
 		return publishers;
 	}
 	public void setPublishers(String publishers) {
 		this.publishers = publishers;
 	}
-	public String getIsbnNo() {
-		return isbnNo;
-	}
-	public void setIsbnNo(String isbnNo) {
-		this.isbnNo = isbnNo;
-	}
 	public GENRE getGenre() {
 		return genre;
 	}
 	public void setGenre(GENRE genre) {
 		this.genre = genre;
+	}
+	public String getCode() {
+		return code;
+	}
+	public void setCode(String code) {
+		this.code = code;
 	}
 	public String getCreatedBy() {
 		return createdBy;
@@ -116,5 +84,17 @@ public class Book {
 	}
 	public void setLastUpdatedOn(Date lastUpdatedOn) {
 		this.lastUpdatedOn = lastUpdatedOn;
+	}
+	public LibraryModel getLibrary() {
+		return library;
+	}
+	public void setLibrary(LibraryModel library) {
+		this.library = library;
+	}
+	public BookModel getBook() {
+		return book;
+	}
+	public void setBook(BookModel book) {
+		this.book = book;
 	}
 }

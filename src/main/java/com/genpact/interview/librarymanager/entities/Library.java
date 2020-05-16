@@ -9,6 +9,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
+import com.genpact.interview.librarymanager.enums.LIB_ITEM_TYPE;
+
 @Entity
 public class Library {
 	@Id
@@ -16,6 +18,7 @@ public class Library {
 	private long libraryId;
 	private String name;
 	private String deescription;
+	private LIB_ITEM_TYPE type;
 	private String createdBy;
 	private Date createdOn;
 	private String updatedBy;
@@ -23,6 +26,12 @@ public class Library {
 	@OneToMany(mappedBy="library")
 	private Set<Book> books;
 	
+	public LIB_ITEM_TYPE getType() {
+		return type;
+	}
+	public void setType(LIB_ITEM_TYPE type) {
+		this.type = type;
+	}
 	public long getLibraryId() {
 		return libraryId;
 	}
