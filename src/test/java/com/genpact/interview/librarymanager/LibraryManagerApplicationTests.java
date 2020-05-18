@@ -1,5 +1,6 @@
 package com.genpact.interview.librarymanager;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import org.junit.jupiter.api.Test;
@@ -11,6 +12,7 @@ import com.genpact.interview.librarymanager.enums.BOOK_TYPE;
 import com.genpact.interview.librarymanager.enums.GENRE;
 import com.genpact.interview.librarymanager.enums.LIB_ITEM_TYPE;
 import com.genpact.interview.librarymanager.models.BookModel;
+import com.genpact.interview.librarymanager.models.ItemEntryResponseModel;
 import com.genpact.interview.librarymanager.models.ItemModel;
 import com.genpact.interview.librarymanager.models.LibraryModel;
 import com.genpact.interview.librarymanager.service.ILibraryManagementService;
@@ -54,7 +56,11 @@ class LibraryManagerApplicationTests {
 		book.setType(BOOK_TYPE.EBOOK);
 		book.setIsbnNo("ddd12301");
 		bookModel.setBook(book);
-		assertNotNull(libraryManagementService.createItemEntry(bookModel));
+		ItemEntryResponseModel res =  libraryManagementService.createItemEntry(bookModel);
+		assertNotNull(res);
+		assertEquals(res.getItemId()>0, true);
+		assertNotNull(libraryManagementService.updateItemEntry(bookModel, res.getItemId()));
+		
 	}
 	
 	/**
