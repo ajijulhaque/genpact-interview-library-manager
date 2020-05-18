@@ -4,19 +4,27 @@ import com.genpact.interview.librarymanager.enums.LIB_ITEM_TYPE;
 
 public class LibraryModel {
 	private String name;
-	private String deescription;
+	private String description;
 	private LIB_ITEM_TYPE type;
+	private long libId;
+	
+	public long getLibId() {
+		return libId;
+	}
+	public void setLibId(long libId) {
+		this.libId = libId;
+	}
 	public String getName() {
 		return name;
 	}
 	public void setName(String name) {
 		this.name = name;
 	}
-	public String getDeescription() {
-		return deescription;
+	public String getDescription() {
+		return description;
 	}
-	public void setDeescription(String deescription) {
-		this.deescription = deescription;
+	public void setDescription(String deescription) {
+		this.description = deescription;
 	}
 	public LIB_ITEM_TYPE getType() {
 		return type;

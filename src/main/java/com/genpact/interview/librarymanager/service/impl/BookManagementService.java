@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import com.genpact.interview.librarymanager.entities.Book;
@@ -40,6 +39,7 @@ public class BookManagementService implements ILibraryManagementService{
 		Book entity = null;
 		try {
 			entity = validateBookModelRequest(itemModel, null);
+			entity.setLibrary(libraryRepository.save(entity.getLibrary()));
 			entity = bookRepository.save(entity);
 			resp = new ItemEntryResponseModel();
 			resp.setItemId(entity.getBookId());
@@ -57,7 +57,9 @@ public class BookManagementService implements ILibraryManagementService{
 			throw new ValidationException("Request body not present");
 		if(entity == null)
 			entity = new Book();
-		Library libEntity = new Library();
+		Library libEntity = entity.getLibrary();
+		if(entity.getLibrary() == null)
+			libEntity = new Library();
 		StringBuilder mandatroy = new StringBuilder();
 		if(bookModel.getAuthor() != null && bookModel.getAuthor().trim().length()>0) {
 			entity.setAuthor(bookModel.getAuthor());
@@ -69,7 +71,7 @@ public class BookManagementService implements ILibraryManagementService{
 		} else {
 			mandatroy.append(Constants.FIELD_BOOK_CODE);
 		}
-		if(bookModel.getGenre() != null && bookModel.getGenre().ordinal()>0) {
+		if(bookModel.getGenre() != null && bookModel.getGenre().ordinal()>=0) {
 			entity.setGenre(bookModel.getGenre());
 		} else {
 			mandatroy.append(Constants.FIELD_BOOK_GENRE);
@@ -80,7 +82,7 @@ public class BookManagementService implements ILibraryManagementService{
 			mandatroy.append(Constants.FIELD_BOOK_NAME);
 		}
 		if(bookModel.getBook() != null) {
-			if(bookModel.getBook().getType() != null && bookModel.getBook().getType().ordinal()>0) {
+			if(bookModel.getBook().getType() != null && bookModel.getBook().getType().ordinal()>=0) {
 				entity.setType(bookModel.getBook().getType());
 			} else {
 				mandatroy.append(Constants.FIELD_BOOK_TYPE);
@@ -96,10 +98,18 @@ public class BookManagementService implements ILibraryManagementService{
 			} else {
 				mandatroy.append(Constants.FIELD_LIBRARY_NAME);
 			}
-			if(lib.getType() != null && lib.getType().ordinal()>0) {
+			if(lib.getType() != null && lib.getType().ordinal()>=0) {
 				libEntity.setType(lib.getType());
 			} else {
 				mandatroy.append(Constants.FIELD_LIBRARY_TYPE);
+			}
+			if(lib.getLibId()>0) {
+				Optional<Library> libTemp = libraryRepository.findById(lib.getLibId());
+				if(libTemp != null && libTemp.isPresent()) {
+					libEntity.setLibraryId(lib.getLibId());
+				} else {
+					throw new ValidationException(Constants.ITEM_NOT_FOUND);
+				}
 			}
 		} else {
 			mandatroy.append(Constants.FIELD_LIBRARY);
@@ -121,6 +131,7 @@ public class BookManagementService implements ILibraryManagementService{
 			Optional<Book> opts = bookRepository.findById(id);
 			if(opts != null && opts.isPresent()) {
 				entity = validateBookModelRequest(bookModel, opts.get());
+				entity.setLibrary(libraryRepository.save(entity.getLibrary()));
 				entity = bookRepository.save(entity);
 				resp = new ItemEntryResponseModel();
 				resp.setItemId(entity.getBookId());
@@ -148,7 +159,7 @@ public class BookManagementService implements ILibraryManagementService{
 					BookModel book = new BookModel();
 					LibraryModel library = new LibraryModel();
 					
-					library.setDeescription(lib.getDeescription());
+					library.setDescription(lib.getDescription());
 					library.setName(lib.getName());
 					library.setType(lib.getType());
 					
@@ -192,7 +203,7 @@ public class BookManagementService implements ILibraryManagementService{
 				BookModel book = new BookModel();
 				LibraryModel library = new LibraryModel();
 				
-				library.setDeescription(entity.getLibrary().getDeescription());
+				library.setDescription(entity.getLibrary().getDescription());
 				library.setName(entity.getLibrary().getName());
 				library.setType(entity.getLibrary().getType());
 				
@@ -235,7 +246,7 @@ public class BookManagementService implements ILibraryManagementService{
 					BookModel book = new BookModel();
 					LibraryModel library = new LibraryModel();
 					
-					library.setDeescription(x.getLibrary().getDeescription());
+					library.setDescription(x.getLibrary().getDescription());
 					library.setName(x.getLibrary().getName());
 					library.setType(x.getLibrary().getType());
 					

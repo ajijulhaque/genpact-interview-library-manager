@@ -9,6 +9,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.genpact.interview.librarymanager.enums.BOOK_TYPE;
 import com.genpact.interview.librarymanager.enums.GENRE;
 
@@ -31,6 +32,7 @@ public class Book {
 	private Date lastUpdatedOn;
 	@ManyToOne
 	@JoinColumn(name="libraryId", nullable = false)
+	@JsonIgnore
 	private Library library;
 	
 	public long getBookId() {
